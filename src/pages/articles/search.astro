@@ -1,0 +1,27 @@
+---
+import ArticleCard from "../../components/ArticleCard.astro";
+import Pagination from "../../components/Pagination.astro";
+import SearchForm from "../../components/SearchForm.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import { type CollectionEntry } from "astro:content";
+
+const query = Astro.url.searchParams.get("query") ?? "";
+
+const response = await fetch(`http://localhost:4321/api/search.json?query=${query}`);
+const searchedBlogArticles: CollectionEntry<"blog">[] = await response.json();
+---
+
+<MainLayout title="Article Search Results">
+	<div class="flex justify-between items-center">
+		<h1 class="text-2xl pb-3">Articles for <span class="font-semibold text-blue-700">"{query}"</span></h1>
+		<SearchForm />
+	</div>
+
+	<!-- Main -->
+	<main class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{searchedBlogArticles.map((article) => <ArticleCard article={article} />)}
+	</main>
+
+	<!-- Pagination -->
+	<Pagination />
+</MainLayout>

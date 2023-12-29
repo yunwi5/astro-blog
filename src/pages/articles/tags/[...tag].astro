@@ -1,0 +1,38 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import ArticleCard from "../../../components/ArticleCard.astro";
+import { capitalizeWithPresevingSpecialCasing } from "../../../utils";
+
+const { tag } = Astro.params;
+
+if (tag == null) {
+	throw new Error("Slug is required");
+}
+
+const blogArticles: CollectionEntry<"blog">[] = (await getCollection("blog")).sort((a, b) => {
+	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+
+const tagArticles = blogArticles.filter((article) => {
+	return article.data.tags.includes(tag);
+});
+---
+
+<MainLayout>
+	<div class="flex justify-between items-center">
+		<h1 class="text-2xl pb-3">{capitalizeWithPresevingSpecialCasing(tag)} Articles</h1>
+		<a href="/articles" class="inline-block bg-gray-100 p-2 mb-6 hover:bg-indigo-500 hover:text-white">Back To Main</a>
+	</div>
+	<!-- Main -->
+	<main class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{tagArticles.map((article) => <ArticleCard article={article} />)}
+	</main>
+
+	<!-- Pagination -->
+	<div class="flex justify-between mt-10">
+		<a href="#" class="inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"> Previous</a>
+		<a href="#" class="inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"> Next</a>
+	</div>
+</MainLayout>
