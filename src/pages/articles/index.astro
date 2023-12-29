@@ -5,10 +5,20 @@ import { type CollectionEntry } from "astro:content";
 import ArticleCard from "../../components/ArticleCard.astro";
 import SearchForm from "../../components/SearchForm.astro";
 import Pagination from "../../components/Pagination.astro";
+import { ARTICLES_PER_PAGE } from "../../constants";
 
 const blogArticles: CollectionEntry<"blog">[] = (await getCollection("blog")).sort((a, b) => {
 	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 });
+
+const isDigit = (value: string | null) => (value != null ? /^\d+$/.test(value) : false);
+
+const pageQuery = Astro.url.searchParams.get("page");
+const currentPage = isDigit(pageQuery) ? Number(pageQuery) : 1;
+
+const totalPages = Math.ceil(blogArticles.length / ARTICLES_PER_PAGE);
+
+const currentPageArticles = blogArticles.slice((currentPage - 1) * ARTICLES_PER_PAGE, currentPage * ARTICLES_PER_PAGE);
 ---
 
 <MainLayout title="All Blog Articles">
@@ -19,9 +29,9 @@ const blogArticles: CollectionEntry<"blog">[] = (await getCollection("blog")).so
 
 	<!-- Main -->
 	<main class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{blogArticles.map((article) => <ArticleCard article={article} />)}
+		{currentPageArticles.map((article) => <ArticleCard article={article} />)}
 	</main>
 
 	<!-- Pagination -->
-	<Pagination />
+	<Pagination currentPage={currentPage} totalPages={totalPages} />
 </MainLayout>

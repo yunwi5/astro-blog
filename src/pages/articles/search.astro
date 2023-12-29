@@ -1,6 +1,5 @@
 ---
 import ArticleCard from "../../components/ArticleCard.astro";
-import Pagination from "../../components/Pagination.astro";
 import SearchForm from "../../components/SearchForm.astro";
 import MainLayout from "../../layouts/MainLayout.astro";
 import { type CollectionEntry } from "astro:content";
@@ -21,7 +20,4 @@ const searchedBlogArticles: CollectionEntry<"blog">[] = await response.json();
 	<main class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{searchedBlogArticles.map((article) => <ArticleCard article={article} />)}
 	</main>
-
-	<!-- Pagination -->
-	<Pagination />
 </MainLayout>
