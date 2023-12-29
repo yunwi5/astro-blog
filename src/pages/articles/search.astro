@@ -6,7 +6,7 @@ import { type CollectionEntry } from "astro:content";
 
 const query = Astro.url.searchParams.get("query") ?? "";
 
-const response = await fetch(`http://localhost:4321/api/search.json?query=${query}`);
+const response = await fetch(`${Astro.url.origin}/api/search.json?query=${query}`);
 const searchedBlogArticles: CollectionEntry<"blog">[] = await response.json();
 ---
 

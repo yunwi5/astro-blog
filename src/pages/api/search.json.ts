@@ -5,7 +5,6 @@ import { searchInArticle } from "../../utils";
 
 export const GET: APIRoute = async ({ url }): Promise<Response> => {
 	const query = url.searchParams.get("query");
-	console.log({ query });
 
 	if (query == null) {
 		return new Response(JSON.stringify({ error: "Missing query parameter" }), { status: 400, headers: { "Content-Type": "application/json" } });
