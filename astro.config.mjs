@@ -7,6 +7,6 @@ import vercel from "@astrojs/vercel/serverless";
 export default defineConfig({
 	integrations: [tailwind()],
 	output: "server",
-	site: "https://astro-blog-bdwypesim-yunwi5.vercel.app",
+	// site: "https://astro-blog-bdwypesim-yunwi5.vercel.app",
 	adapter: vercel(),
 });

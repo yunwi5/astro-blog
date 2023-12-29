@@ -7,6 +7,7 @@ import { getBaseUrl } from "../../config";
 
 const query = Astro.url.searchParams.get("query") ?? "";
 
+console.log({ baseUrl: getBaseUrl() });
 const response = await fetch(`${getBaseUrl()}/api/search.json?query=${encodeURIComponent(query)}`);
 const searchedBlogArticles: CollectionEntry<"blog">[] = await response.json();
 ---
