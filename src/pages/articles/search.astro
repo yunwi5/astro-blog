@@ -3,10 +3,11 @@ import ArticleCard from "../../components/ArticleCard.astro";
 import SearchForm from "../../components/SearchForm.astro";
 import MainLayout from "../../layouts/MainLayout.astro";
 import { type CollectionEntry } from "astro:content";
+import { getBaseUrl } from "../../config";
 
 const query = Astro.url.searchParams.get("query") ?? "";
 
-const response = await fetch(`${Astro.url.origin}/api/search.json?query=${query}`);
+const response = await fetch(`${getBaseUrl()}/api/search.json?query=${encodeURIComponent(query)}`);
 const searchedBlogArticles: CollectionEntry<"blog">[] = await response.json();
 ---
 
